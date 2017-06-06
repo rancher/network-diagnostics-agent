@@ -7,9 +7,25 @@ info()
 }
 
 HISTORY_LENGTH=$2
-
 LOGS_DIR=$1
-cd ${LOGS_DIR}
+
+if [ "${LOGS_DIR}" == "" ]; then
+    LOGS_DIR=/logs
+fi
+
+if [ "${HISTORY_LENGTH}" == "" ]; then
+    HISTORY_LENGTH=1000
+fi
+
+cd /tmp
+
+if [ ! -f ${LOGS_DIR}/dumps.tar.bz2 ]; then
+    mkdir -p /tmp/dumps
+else
+    tar xfj ${LOGS_DIR}/dumps.tar.bz2
+fi
+
+cd /tmp/dumps
 
 rm -rf dump
 mkdir -p dump
@@ -77,13 +93,17 @@ else
     nsenter -m -u -i -n -p -t ${PM_PID} -- cat /etc/resolv.conf > network-manager/resolv.conf.log 2>&1 || true
 fi
 
-cd ..
+cd /tmp/dumps
 
 CUR_TMP_DIR="dump.$(date -u +%Y-%m-%dT%H-%M-%SZ).$(date +%s%N)"
 mv dump $CUR_TMP_DIR
-tar cjf ${CUR_TMP_DIR}.tar.bz2 $CUR_TMP_DIR
-rm -rf $CUR_TMP_DIR
+
 TO_DELETE=$(ls -1t | sed '1,'${HISTORY_LENGTH}'d')
 if [ -n "$TO_DELETE" ]; then
     rm -rf $TO_DELETE
 fi
+
+cd /tmp
+tar cjf dumps.tar.bz2 dumps
+cp /tmp/dumps.tar.bz2 ${LOGS_DIR}/dumps.tar.bz2
+rm -rf dumps dumps.tar.bz2
