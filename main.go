@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/rancher/network-support-agent/infocollector"
+	"github.com/rancher/network-diagnostics-agent/infocollector"
 	"github.com/urfave/cli"
 )
 
@@ -14,7 +14,7 @@ var VERSION = "v0.0.0-dev"
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "network-support-agent"
+	app.Name = "network-diagnostics-agent"
 	app.Version = VERSION
 	app.Flags = []cli.Flag{
 		cli.StringFlag{

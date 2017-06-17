@@ -1,4 +1,4 @@
-network-support-agent
+network-diagnostics-agent
 ========
 
 This microservice does the following:
@@ -11,7 +11,7 @@ This microservice does the following:
 
 ## Running
 
-`./bin/network-support-agent`
+`./bin/network-diagnostics-agent`
 
 ## License
 Copyright (c) 2014-2017 [Rancher Labs, Inc.](http://rancher.com)
